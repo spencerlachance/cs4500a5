@@ -7,7 +7,6 @@
 #include "schema.h"
 #include "column.h"
 #include "row.h"
-#include <thread>
 
 /**
  * Fielder that prints each field.
@@ -88,23 +87,6 @@ class DataFrame : public Object {
         DataFrame(Schema& schema) {
             IntArray* types = schema.get_types();
             columns_ = new Array();
-            for (int i = 0; i < types->size(); i++) {
-                char type = types->get(i);
-                switch (type) {
-                    case 'I':
-                        columns_->append(new IntColumn());
-                        break;
-                    case 'B':
-                        columns_->append(new BoolColumn());
-                        break;
-                    case 'F':
-                        columns_->append(new FloatColumn());
-                        break;
-                    case 'S':
-                        columns_->append(new StringColumn());
-                        break;
-                }
-            }
             schema_ = new Schema(schema);
             length_ = 0;
         }
@@ -271,39 +253,6 @@ class DataFrame : public Object {
             }
             delete row;
         }
-
-        void map_x(int x) {
-            int start, end;
-            Rower* r;
-            Row* row = new Row(*schema_);
-            if (x == 1) {
-                r = r_;
-                start = 0;
-                end = length_ / 2;
-            } else {
-                r = r2_;
-                start = length_ / 2;
-                end = length_;
-            }
-            for (int i = start; i < end; i++) {
-                row->set_idx(i);
-                fill_row(i, *row);
-                r->accept(*row);
-            }
-            delete row;
-        }
-
-        /** This method clones the Rower and executes the map in parallel. Join is
-          * used at the end to merge the results. */
-        void pmap(Rower& r) {
-            r_ = &r;
-            r2_ = dynamic_cast<Rower*>(r_->clone());
-            std::thread t1(&DataFrame::map_x, this, 1);
-            std::thread t2(&DataFrame::map_x, this, 2);
-            t1.join();
-            t2.join();
-            r_->join_delete(r2_);
-        }
         
         /** Create a new dataframe, constructed from rows for which the given Rower
           * returned true from its accept method. */
@@ -340,16 +289,16 @@ class DataFrame : public Object {
             while (col->size() < length_) {
                 switch(type) {
                     case 'I':
-                        col->append_missing();
+                        col->push_back(0);
                         break;
                     case 'B':
-                        col->append_missing();
+                        col->push_back(false);
                         break;
                     case 'F':
-                        col->append_missing();
+                        col->push_back(0);
                         break;
                     case 'S':
-                        col->append_missing();
+                        col->push_back("");
                         break;
                     default:
                         exit_if_not(false, "Invalid column type.");
