@@ -75,10 +75,36 @@ class ParserMain {
             parser.parseFile();
             ColumnSet* set = parser.getColumnSet();
 
-            for (int i = 0; i < set->getLength(); i++) {
-                Column* col = set->getColumn(i);
-                _df->add_column(col->clone(), nullptr);
+            // Adds the columns to the empty df by creating rows from the array of columns
+            // and adding each row to the df.
+            Row* row = new Row(*schema);
+            int nrows = set->getColumn(0)->size();
+            char type;
+            for (int i = 0; i < nrows; i++) {
+                // Build the row
+                for (int j = 0; j < set->getLength(); j++) {
+                    Column* col = set->getColumn(j);
+                    type = col->get_type();
+                    switch (type) {
+                        case 'I':
+                            row->set(j, col->as_int()->get(i));
+                            break;
+                        case 'B':
+                            row->set(j, col->as_bool()->get(i));
+                            break;
+                        case 'F':
+                            row->set(j, col->as_float()->get(i));
+                            break;
+                        case 'S':
+                            row->set(j, col->as_string()->get(i));
+                            break;
+                        default:
+                            assert(false);
+                    }
+                }
+                _df->add_row(*row);
             }
+            delete row;
 
             fclose(file);
         }
@@ -156,7 +182,7 @@ class ParserMain {
                         } else if (strcmp(arg, "-is_missing_idx") == 0) {
                             state = ParseState::FLAG_MISSING_IDX_COL;
                         } else {
-                            cli_assert(false);
+                            // cli_assert(false);
                         }
                         break;
                     case ParseState::FLAG_F:

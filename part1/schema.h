@@ -50,7 +50,7 @@ class Schema : public Object {
             for (int i = 0; i < strlen(types); i++) {
                 char c = types[i];
                 exit_if_not(c == 'S' || c == 'B' || c == 'I' || c == 'F', 
-                "Invalid type chararacter found.");
+                "Invalid type character found.");
                 col_types_->append(c);
                 col_names_->append(nullptr);
             }

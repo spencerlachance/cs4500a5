@@ -465,13 +465,16 @@ class SorParser : public Object {
 
         Column* column = columns->getColumn(field_num);
 
-        assert(slice.getLength() > 0);
+        if (slice.getLength() == 0) {
+            column->append_missing();
+            return;
+        }
 
         switch (column->get_type()) {
             case 'S':
                 slice.trim(STRING_QUOTE);
                 assert(slice.getLength() <= MAX_STRING);
-                dynamic_cast<StringColumn*>(column)->push_back(slice.toCString());
+                dynamic_cast<StringColumn*>(column)->push_back(new String(slice.toCString()));
                 break;
             case 'I':
                 dynamic_cast<IntColumn*>(column)->push_back(slice.toInt());
@@ -652,9 +655,9 @@ class SorParser : public Object {
                 break;
             }
             size_t scanned_fields = _scanLine(line, ParserMode::PARSE_FILE, _columns);
-            // for (size_t i = scanned_fields; i < _num_columns; i++) {
-            //     _columns->getColumn(i)->appendMissing();
-            // }
+            for (size_t i = scanned_fields; i < _num_columns; i++) {
+                _columns->getColumn(i)->append_missing();
+            }
             delete[] line;
         }
     }

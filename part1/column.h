@@ -43,7 +43,11 @@ class Column : public Object {
         /** Returns the number of elements in the column. */
         virtual size_t size() = 0;
 
+        /** Clones the column */
         virtual Column* clone() = 0;
+
+        /** Appends a default value that represents a missing field */
+        virtual void append_missing() = 0;
 
         /** Return the type of this column as a char: 'S', 'B', 'I' and 'F'. */
         char get_type() {
@@ -157,6 +161,11 @@ class IntColumn : public Column {
             clone->get_fields()->append_all(ints_);
             return clone;
         }
+
+        /** Appends a default value that represents a missing field */
+        void append_missing() {
+            push_back(0);
+        }
 };
  
 /*************************************************************************
@@ -264,6 +273,11 @@ class BoolColumn : public Column {
             BoolColumn* clone = new BoolColumn();
             clone->get_fields()->append_all(bools_);
             return clone;
+        }
+
+        /** Appends a default value that represents a missing field */
+        void append_missing() {
+            push_back(false);
         }
 };
  
@@ -373,6 +387,11 @@ class FloatColumn : public Column {
             clone->get_fields()->append_all(floats_);
             return clone;
         }
+
+        /** Appends a default value that represents a missing field */
+        void append_missing() {
+            push_back(0.0f);
+        }
 };
  
 /*************************************************************************
@@ -478,5 +497,10 @@ class StringColumn : public Column {
             StringColumn* clone = new StringColumn();
             clone->get_fields()->append_all(strings_);
             return clone;
+        }
+
+        /** Appends a default value that represents a missing field */
+        void append_missing() {
+            push_back(nullptr);
         }
 };

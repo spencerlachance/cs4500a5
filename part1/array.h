@@ -60,23 +60,6 @@ class Array : public Object {
 
             outer_capacity_ += INITIAL_OUTER_CAPACITY;
         }
-
-        /**
-         * Private function that deletes unecessary memory once enough items
-         * have been removed from the Array.
-         */
-        // void deallocate_() {
-        //     // Exponentially increasing the capacity each time for scalability.
-        //     Object** new_arr = new Object*[capacity_ / 2];
-        //     capacity_ /= 2;
-
-        //     Object** old_arr = objects_;
-        //     for (int i = 0; i < size_; i++) {
-        //         new_arr[i] = old_arr[i];
-        //     }
-        //     delete[] old_arr;
-        //     objects_ = new_arr;
-        // }
         
         // Appends val to the end of the array.
         void append(Object* val) {
@@ -107,51 +90,6 @@ class Array : public Object {
             }
         }
         
-        // Inserts val at index, so that array.get(index) will return val.
-        // Pushes all elements after index down by 1.
-        // If index is >= size(), is equivalent to calling append(val).
-        // void insert(Object* val, size_t index) {
-        //     assert(index >= 0);
-        //     if (index >= size_) {
-        //         append(val);
-        //         return;
-        //     }
-            
-        //     if (size_ + 1 > capacity_) reallocate_();
-        //     for (int i = size_; i > index; i--) {
-        //         objects_[i] = objects_[i - 1];
-        //     }
-        //     objects_[index] = val;
-        //     size_++;
-        // }
-        
-        // Inserts every element of vals into the array.
-        // Pushes all elements after index down by the length of the array.
-        // If vals is null, does nothing.
-        // If index is >= size(), is equivalent to calling append_all(vals).
-        // void insert_all(Array* vals, size_t index) {
-        //     assert(index >= 0);
-        //     if (index >= size_) {
-        //         append_all(vals);
-        //         return;
-        //     }
-
-        //     size_t vals_size = vals->size();
-        //     while (size_ + vals_size > capacity_) {
-        //         reallocate_();
-        //     }
-        //     int i;
-        //     for (i = size_ - 1; i >= index; i--) {
-        //         objects_[i + vals_size] = objects_[i];
-        //     }
-        //     int j = vals_size - 1;
-        //     for (i = index + vals_size - 1; i >= index; i--) {
-        //         objects_[i] = vals->get(j);
-        //         j--;
-        //     }
-        //     size_ += vals_size;
-        // }
-        
         // Sets the element at index to val.
         // If index == size(), appends to the end of the array.
         void set(Object* val, size_t index) {
@@ -176,49 +114,6 @@ class Array : public Object {
             int inner_idx = index % INNER_CAPACITY;
             return objects_[outer_idx][inner_idx];
         }
-        
-        // Removes the element at index.
-        // Pulls all elements after index up by 1.
-        // If index is >= size(), does nothing and returns NULL.
-        // Object* remove(size_t index) {
-        //     assert(index >= 0);
-        //     if (index >= size_) return NULL;
-
-        //     Object* remove_me = objects_[index];
-        //     for (int i = index; i < size_ - 1; i++) {
-        //         objects_[i] = objects_[i + 1];
-        //     }
-        //     size_--;
-        //     if (size_ < capacity_ / 2) deallocate_();
-        //     return remove_me;
-        // }
-        
-        // Removes the elements from start to end and returns a 
-        //    new Array containing the elements. 
-        //    Start is inclusive, end is exclusive
-        // Pulls all elements after start up by (end - start).
-        // If end <= start, does nothing and returns NULL.
-        // Else if start >= size(), does nothing and returns NULL.
-        // Else if end > size(), acts as if end == size().
-        // Array* remove_range(size_t start, size_t end) {
-        //     assert(start >= 0);
-        //     assert(end >= 0);
-        //     if (end <= start || start >= size_) return NULL;
-        //     if (end > size_) end = size_;
-
-        //     Array* removed = new Array();
-        //     int new_index;
-        //     for (int i = start; i < end; i++) {
-        //         removed->append(objects_[i]);
-        //         new_index = i + end - start;
-        //         if (new_index < size_) {
-        //             objects_[i] = objects_[new_index];
-        //         }
-        //     }
-        //     size_ -= end - start;
-        //     if (size_ < capacity_ / 2) deallocate_();
-        //     return removed;
-        // }
         
         // Returns if this array contains obj, using obj->equals().
         // If obj is null, uses == .
@@ -258,18 +153,6 @@ class Array : public Object {
             }
             return -1;
         }
-        
-        // Clears all the elements in this array, 'delete' ing them.
-        // void clear() {
-        //     if (size_ > 0) {
-        //         if (capacity_ > INITIAL_CAPACITY) {
-        //             delete[] objects_;
-        //             capacity_ = INITIAL_CAPACITY;
-        //             objects_ = new Object*[capacity_];
-        //         }
-        //         size_ = 0;
-        //     }
-        // }
         
         // Returns the number of elements in this array. 
         size_t size() {
@@ -352,24 +235,6 @@ class BoolArray : public Object {
 
             outer_capacity_ += INITIAL_OUTER_CAPACITY;
         }
-
-        /*
-         * Private function that deletes unecessary memory once enough items
-         * have been removed from the Array.
-         */
-        // void deallocate_() {
-        //     // Exponentially increasing the capacity each time for scalability.
-        //     bool** new_outer_arr = new bool*[capacity_ - INITIAL_OUTER_CAPACITY];
-
-        //     bool** old_outer_arr = bools_;
-        //     for (int i = 0; i < capacity_; i++) {
-        //         new_outer_arr[i] = old_outer_arr[i];
-        //     }
-        //     delete[] old_outer_arr;
-        //     bools_ = new_outer_arr;
-
-        //     capacity_ -= INITIAL_OUTER_CAPACITY;
-        // }
     
         // Appends val onto the end of the array
         void append(bool val) {
@@ -395,24 +260,6 @@ class BoolArray : public Object {
             }
         }
         
-        // Inserts val at index, so that array.get(index) will return val.
-        // Pushes all elements after index down by 1.
-        // If index is >= size(), is equivalent to calling append(val).
-        // void insert(bool val, size_t index) {
-        //     assert(index >= 0);
-        //     if (index >= size_) {
-        //         append(val);
-        //         return;
-        //     }
-            
-        //     if (size_ + 1 > capacity_) reallocate_();
-        //     for (int i = size_; i > index; i--) {
-        //         bools_[i] = bools_[i - 1];
-        //     }
-        //     bools_[index] = val;
-        //     size_++;
-        // }
-        
         // Sets the element at index to val.
         // If index == size(), appends to the end of the array.
         void set(bool val, size_t index) { 
@@ -437,21 +284,6 @@ class BoolArray : public Object {
             int inner_idx = index % INNER_CAPACITY;
             return bools_[outer_idx][inner_idx];
         }
-        
-        // Removes the element at index. Returns the previous element.
-        // Pulls all elements after index up by 1.
-        // If index is >= size(), does nothing and returns undefined.
-        // bool remove(size_t index) {
-        //     if (index >= size_) return NULL;
-
-        //     bool remove_me = bools_[index];
-        //     for (int i = index; i < size_ - 1; i++) {
-        //         bools_[i] = bools_[i + 1];
-        //     }
-        //     size_--;
-        //     if (size_ < capacity_ / 2) deallocate_();
-        //     return remove_me;
-        // }
         
         // Returns if the array contains val.
         bool contains(bool val) {
@@ -479,16 +311,6 @@ class BoolArray : public Object {
             }
             return -1;
         }
-        
-        // Removes all elements.
-        // void clear() {
-        //     if (size_ > 0) {
-        //         delete[] bools_;
-        //         capacity_ = INITIAL_CAPACITY;
-        //         bools_ = new bool[capacity_];
-        //         size_ = 0;
-        //     }
-        // }
         
         // Returns the number of elements.
         size_t size() {
@@ -571,23 +393,6 @@ class IntArray : public Object {
 
             outer_capacity_ += INITIAL_OUTER_CAPACITY;
         }
-
-        /*
-         * Private function that deletes unecessary memory once enough items
-         * have been removed from the IntArray.
-         */
-        // void deallocate_() {
-        //     int* new_arr = new int[capacity_ / 2];
-        //     capacity_ /= 2;
-
-        //     int* old_arr = ints_;
-        //     for (int i = 0; i < size_; i++) {
-        //         new_arr[i] = old_arr[i];
-        //     }
-        //     delete[] old_arr;
-        //     ints_ = new_arr;
-        // }
-
         
         // Appends val onto the end of the array
         void append(int val) {
@@ -612,24 +417,6 @@ class IntArray : public Object {
                 append(vals->get(i));
             }
         }
-        
-        // Inserts val at index, so that array.get(index) will return val.
-        // Pushes all elements after index down by 1.
-        // If index is >= size(), is equivalent to calling append(val).
-        // void insert(int val, size_t index) {
-        //     assert(index >= 0);
-        //     if (index >= size_) {
-        //         append(val);
-        //         return;
-        //     }
-            
-        //     if (size_ + 1 > capacity_) reallocate_();
-        //     for (int i = size_; i > index; i--) {
-        //         ints_[i] = ints_[i - 1];
-        //     }
-        //     ints_[index] = val;
-        //     size_++;
-        // }
         
         // Sets the element at index to val.
         // If index == size(), appends to the end of the array.
@@ -656,24 +443,6 @@ class IntArray : public Object {
             int inner_idx = index % INNER_CAPACITY;
             return ints_[outer_idx][inner_idx];
         }
-        
-        // Removes the element at index. Returns the previous element.
-        // Pulls all elements after index up by 1.
-        // If index is >= size(), does nothing and returns undefined.
-        // int remove(size_t index) {
-        //     if (index >= size_) {
-        //         printf("Index out of bounds, returning -1\n");
-        //         return -1;
-        //     }
-
-        //     int remove_me = ints_[index];
-        //     for (int i = index; i < size_ - 1; i++) {
-        //         ints_[i] = ints_[i + 1];
-        //     }
-        //     size_--;
-        //     if (size_ < capacity_ / 2) deallocate_();
-        //     return remove_me;
-        // }
         
         // Returns if the array contains val.
         bool contains(int val) {
@@ -702,16 +471,6 @@ class IntArray : public Object {
             }
             return -1;
         }
-        
-        // Removes all elements.
-        // void clear() {
-        //     if (size_ > 0) {
-        //         delete[] ints_;
-        //         capacity_ = INITIAL_CAPACITY;
-        //         ints_ = new int[capacity_];
-        //         size_ = 0;
-        //     }
-        // }
         
         // Returns the number of elements.
         size_t size() {
@@ -795,23 +554,6 @@ class FloatArray : public Object {
             outer_capacity_ += INITIAL_OUTER_CAPACITY;
         }
 
-        /*
-         * Private function that deletes unecessary memory once enough items
-         * have been removed from the FloatArray.
-         */
-        // void deallocate_() {
-        //     // Exponentially increasing the capacity each time for scalability.
-        //     float* new_arr = new float[capacity_ / 2];
-        //     capacity_ /= 2;
-
-        //     float* old_arr = floats_;
-        //     for (int i = 0; i < size_; i++) {
-        //         new_arr[i] = old_arr[i];
-        //     }
-        //     delete[] old_arr;
-        //     floats_ = new_arr;
-        // }
-
         // Appends val onto the end of the array
         void append(float val) {
             // If all of the inner arrays are full, allocate more memory for the outer one.
@@ -835,24 +577,6 @@ class FloatArray : public Object {
                 append(vals->get(i));
             }
         }
-        
-        // Inserts val at index, so that array.get(index) will return val.
-        // Pushes all elements after index down by 1.
-        // If index is >= size(), is equivalent to calling append(val).
-        // void insert(float val, size_t index) {
-        //     assert(index >= 0);
-        //     if (index >= size_) {
-        //         append(val);
-        //         return;
-        //     }
-            
-        //     if (size_ + 1 > capacity_) reallocate_();
-        //     for (int i = size_; i > index; i--) {
-        //         floats_[i] = floats_[i - 1];
-        //     }
-        //     floats_[index] = val;
-        //     size_++;
-        // }
         
         // Sets the element at index to val.
         // If index == size(), appends to the end of the array.
@@ -878,24 +602,6 @@ class FloatArray : public Object {
             int inner_idx = index % INNER_CAPACITY;
             return floats_[outer_idx][inner_idx];
         }
-        
-        // Removes the element at index. Returns the previous element.
-        // Pulls all elements after index up by 1.
-        // If index is >= size(), does nothing and returns undefined.
-        // float remove(size_t index) {
-        //     if (index >= size_) {
-        //         printf("Index out of bounds, returning -1\n");
-        //         return -1;
-        //     }
-
-        //     float remove_me = floats_[index];
-        //     for (int i = index; i < size_ - 1; i++) {
-        //         floats_[i] = floats_[i + 1];
-        //     }
-        //     size_--;
-        //     if (size_ < capacity_ / 2) deallocate_();
-        //     return remove_me;
-        // }
         
         // Returns if the array contains val.
         bool contains(float val) {
@@ -924,16 +630,6 @@ class FloatArray : public Object {
             }
             return -1;
         }
-        
-        // Removes all elements.
-        // void clear() {
-        //     if (size_ > 0) {
-        //         delete[] floats_;
-        //         capacity_ = INITIAL_CAPACITY;
-        //         floats_ = new float[capacity_];
-        //         size_ = 0;
-        //     }
-        // }
         
         // Returns the number of elements.
         size_t size() {

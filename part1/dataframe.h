@@ -87,6 +87,23 @@ class DataFrame : public Object {
         DataFrame(Schema& schema) {
             IntArray* types = schema.get_types();
             columns_ = new Array();
+            for (int i = 0; i < types->size(); i++) {
+                char type = types->get(i);
+                switch (type) {
+                    case 'I':
+                        columns_->append(new IntColumn());
+                        break;
+                    case 'B':
+                        columns_->append(new BoolColumn());
+                        break;
+                    case 'F':
+                        columns_->append(new FloatColumn());
+                        break;
+                    case 'S':
+                        columns_->append(new StringColumn());
+                        break;
+                }
+            }
             schema_ = new Schema(schema);
             length_ = 0;
         }
@@ -289,16 +306,16 @@ class DataFrame : public Object {
             while (col->size() < length_) {
                 switch(type) {
                     case 'I':
-                        col->push_back(0);
+                        col->append_missing();
                         break;
                     case 'B':
-                        col->push_back(false);
+                        col->append_missing();
                         break;
                     case 'F':
-                        col->push_back(0);
+                        col->append_missing();
                         break;
                     case 'S':
-                        col->push_back("");
+                        col->append_missing();
                         break;
                     default:
                         exit_if_not(false, "Invalid column type.");

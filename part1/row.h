@@ -111,7 +111,7 @@ class Row : public Object {
             if (arr == nullptr) {
                 exit_if_not(false, "Column index corresponds to the wrong type.");
             }
-            arr->get(0);
+            return arr->get(0);
         }
         bool get_bool(size_t col) {
             exit_if_not(col < width(), "Column index out of bounds.");
@@ -119,7 +119,7 @@ class Row : public Object {
             if (arr == nullptr) {
                 exit_if_not(false, "Column index corresponds to the wrong type.");
             }
-            arr->get(0);
+            return arr->get(0);
         }
         float get_float(size_t col) {
             exit_if_not(col < width(), "Column index out of bounds.");
@@ -127,7 +127,7 @@ class Row : public Object {
             if (arr == nullptr) {
                 exit_if_not(false, "Column index corresponds to the wrong type.");
             }
-            arr->get(0);
+            return arr->get(0);
         }
         String* get_string(size_t col) {
             exit_if_not(col < width(), "Column index out of bounds.");
