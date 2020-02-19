@@ -1,0 +1,130 @@
+# Download datafile from github
+wget https://raw.githubusercontent.com/spencerlachance/cs4500a5/master/part1/datafile.zip
+Will not apply HSTS. The HSTS database must be a regular and non-world-writable file.
+ERROR: could not open HSTS store at '/home/slachance25/.wget-hsts'. HSTS will be disabled.
+--2020-02-18 21:43:48--  https://raw.githubusercontent.com/spencerlachance/cs4500a5/master/part1/datafile.zip
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.0.133, 151.101.64.133, 151.101.128.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.0.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 361958 (353K) [application/zip]
+Saving to: ‘datafile.zip’
+
+datafile.zip                       100%[================================================================>] 353.47K  --.-KB/s    in 0.04s
+
+2020-02-18 21:43:48 (7.82 MB/s) - ‘datafile.zip’ saved [361958/361958]
+
+unzip datafile.zip
+Archive:  datafile.zip
+  inflating: datafile.txt
+# First Rower
+time -p ./a.out -e 1 -f datafile.txt -len 5000000
+EXAMPLE 1 MAP:
+real 1.04
+user 0.89
+sys 0.14
+
+
+time -p ./a.out -p -e 1 -f datafile.txt -len 5000000
+EXAMPLE 1 PMAP:
+real 0.95
+user 0.75
+sys 0.20
+
+
+time -p ./a.out -e 1 -f datafile.txt -len 10000000
+EXAMPLE 1 MAP:
+real 2.71
+user 2.18
+sys 0.51
+
+
+time -p ./a.out -p -e 1 -f datafile.txt -len 10000000
+EXAMPLE 1 PMAP:
+real 3.07
+user 2.46
+sys 0.56
+
+
+time -p ./a.out -e 1 -f datafile.txt -len 50000000
+EXAMPLE 1 MAP:
+real 83.16
+user 75.32
+sys 6.90
+
+
+time -p ./a.out -p -e 1 -f datafile.txt -len 50000000
+EXAMPLE 1 PMAP:
+real 116.57
+user 100.98
+sys 16.51
+
+
+time -p ./a.out -e 1 -f datafile.txt -len 100000000
+EXAMPLE 1 MAP:
+real 413.00
+user 380.29
+sys 30.15
+
+
+time -p ./a.out -p -e 1 -f datafile.txt -len 100000000
+EXAMPLE 1 PMAP:
+real 455.88
+user 393.21
+sys 63.28
+
+
+# Second Rower
+time -p ./a.out -e 2 -f datafile.txt -len 50000
+EXAMPLE 2 MAP:
+real 1.95
+user 1.92
+sys 0.03
+
+
+time -p ./a.out -p -e 2 -f datafile.txt -len 50000
+EXAMPLE 2 PMAP:
+real 0.53
+user 0.90
+sys 0.07
+
+
+time -p ./a.out -e 2 -f datafile.txt -len 100000
+EXAMPLE 2 MAP:
+real 6.95
+user 6.89
+sys 0.06
+
+
+time -p ./a.out -p -e 2 -f datafile.txt -len 100000
+EXAMPLE 2 PMAP:
+real 1.79
+user 3.42
+sys 0.03
+
+
+time -p ./a.out -e 2 -f datafile.txt -len 500000
+EXAMPLE 2 MAP:
+real 173.55
+user 172.45
+sys 0.17
+
+
+time -p ./a.out -p -e 2 -f datafile.txt -len 500000
+EXAMPLE 2 PMAP:
+real 42.92
+user 84.85
+sys 0.18
+
+
+time -p ./a.out -e 2 -f datafile.txt -len 1000000
+EXAMPLE 2 MAP:
+real 667.44
+user 662.96
+sys 0.25
+
+
+time -p ./a.out -p -e 2 -f datafile.txt -len 1000000
+EXAMPLE 2 PMAP:
+real 171.22
+user 340.10
+sys 0.48
